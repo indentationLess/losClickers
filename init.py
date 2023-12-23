@@ -24,17 +24,17 @@ taco = pygame.image.load("resources/images/taco.png")
 # Get the dimensions of the image
 taco_width = taco.get_width()
 taco_height = taco.get_height()
+taco_rect = taco.get_rect()
 
 taco_x = 50
 taco_y = 80
-
 # for text
 black = (0, 0, 0)
 white = (255, 255, 255)
 
 # upgrades list
-upgrades = [
-    {"cost": 25, "effect": 1, "purchased": False, "label": "Double Click"},
+upgrades = [{"cost": 25, "effect": 1, "purchased": False, "label": "Double Click"}]
+buildings = [
     {"cost": 100, "effect": 1, "purchased": 0, "label": "taco machine"},
 ]
 

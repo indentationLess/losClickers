@@ -31,14 +31,25 @@ def onclick():
 
 
 def displayUpgrades():
-    x, y = 400, 50  # Starting position for the upgrades menu
+    x, y = 600, 50  # Starting position for the upgrades menu
     y_offset = 50
+    message("upgrades: ", white, (x, y - 50), 60)
     for upgrade in upgrades:
         status = (
             "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
         )
-        message(f"{upgrade['label']} - {status}", white, (400, y_offset), 60)
-        y_offset += 30
+        message(f"{upgrade['label']} - {status}", white, (x, y_offset), 60)
+        y_offset += 60
+    message("buildings: ", white, (x, y_offset), 60)
+    y_offset += 40
+    for building in buildings:
+        status = (
+            "Purchased: " + str(building["purchased"])
+            if building["purchased"] > 0
+            else f"Cost: {building['cost']} Clicks"
+        )
+        message(f"{building['label']} - {status}", white, (x, y_offset), 60)
+    y_offset += 40
 
 
 def purchaseUpgrade(mouse_pos):
@@ -51,6 +62,14 @@ def purchaseUpgrade(mouse_pos):
                 tacoClickCount -= upgrade["cost"]
                 upgrade["purchased"] = True
                 break
+        y += 40
+    for building in buildings:
+        text_width, text_height = screen_text.get_size()
+        building_rect = pygame.Rect(x, y, 400, 60)
+        if building_rect.collidepoint(mouse_pos) and tacoClickCount >= building["cost"]:
+            tacoClickCount -= building["cost"]
+            building["purchased"] += 1
+            break
         y += 40
 
 
@@ -69,20 +88,6 @@ def message(msg, color, cords, size, font=1):
     screen.blit(screen_text, cords)
 
 
-def purchaseUpgrade(mouse_pos):
-    global tacoClickCount
-    x, y = 750, 50
-    for upgrade in upgrades:
-        text_width, text_height = screen_text.get_size()
-        upgrade_rect = pygame.Rect(x, y, text_width, text_height)
-        if upgrade_rect.collidepoint(mouse_pos) and not upgrade["purchased"]:
-            if tacoClickCount >= upgrade["cost"]:
-                tacoClickCount -= upgrade["cost"]
-                upgrade["purchased"] = True
-                break
-            y += 40
-
-
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -96,11 +101,17 @@ while running:
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
-    image_rect.center = (300, 240)
     message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
     displayUpgrades()
     screenUpdate()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == timer:
+            for building in buildings:
+                if building["label"] == "Taco Machine":
+                    tacoClickCount += building["purchased"] * building["effect"]
 
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
