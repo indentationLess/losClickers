@@ -36,8 +36,8 @@ def displayUpgrades():
         status = (
             "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
         )
-        message(f"{upgrade['label']} - {status}", white, (x, y), 30)
-        y += 40
+        message(f"{upgrade['label']} - {status}", white, (400, 50), 60)
+       
 
 
 def purchaseUpgrade(mouse_pos):
@@ -54,6 +54,7 @@ def purchaseUpgrade(mouse_pos):
 
 
 def message(msg, color, cords, size, font=1):
+    global screen_text 
     fontsize = int(size)
     if font == 1:
         font = pygame.font.SysFont(None, fontsize)
@@ -65,6 +66,20 @@ def message(msg, color, cords, size, font=1):
         font = pygame.font.SysFont("dejavusans", fontsize)
     screen_text = font.render(msg, True, color)
     screen.blit(screen_text, cords)
+
+
+def purchaseUpgrade(mouse_pos):
+    global tacoClickCount
+    x, y = 400, 50
+    for upgrade in upgrades:
+        text_width, text_height = screen_text.get_size()
+        upgrade_rect = pygame.Rect(x, y, text_width, text_height)
+        if upgrade_rect.collidepoint(mouse_pos) and not upgrade["purchased"]:
+            if tacoClickCount >= upgrade["cost"]:
+                tacoClickCount -= upgrade["cost"]
+                upgrade["purchased"] = True
+                break
+        y += 40
 
 
 while running:
@@ -80,8 +95,8 @@ while running:
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
-    image_rect.center = (400, 300)
-    message(f"tacos: {tacoClickCount}", white, (taco_x - 290, taco_y - 60), 100)
+    image_rect.center = (300, 200)
+    message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
     displayUpgrades()
     screenUpdate()
