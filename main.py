@@ -32,12 +32,13 @@ def onclick():
 
 def displayUpgrades():
     x, y = 400, 50  # Starting position for the upgrades menu
+    y_offset = 50
     for upgrade in upgrades:
         status = (
             "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
         )
-        message(f"{upgrade['label']} - {status}", white, (400, 50), 60)
-       
+        message(f"{upgrade['label']} - {status}", white, (400, y_offset), 60)
+        y_offset += 30
 
 
 def purchaseUpgrade(mouse_pos):
@@ -54,7 +55,7 @@ def purchaseUpgrade(mouse_pos):
 
 
 def message(msg, color, cords, size, font=1):
-    global screen_text 
+    global screen_text
     fontsize = int(size)
     if font == 1:
         font = pygame.font.SysFont(None, fontsize)
@@ -79,7 +80,7 @@ def purchaseUpgrade(mouse_pos):
                 tacoClickCount -= upgrade["cost"]
                 upgrade["purchased"] = True
                 break
-        y += 40
+            y += 40
 
 
 while running:
