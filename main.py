@@ -1,23 +1,35 @@
 import pygame
 import os
-from init import * 
+from init import *
 
-# Get the dimensions of the image
-taco_width  = taco.get_width()
-taco_height = taco.get_height()
 
-taco_x = width // 2 - taco_width // 2
-taco_y = height // 2 - taco_height // 2
+def screenUpdate():
+    pygame.display.update()
+
 
 def onclick():
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    mouse_pos = pygame.mouse.get_pos()
-                    if image_rect.collidepoint(mouse_pos):
-                        print("Image clicked!")
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+                if image_rect.collidepoint(mouse_pos):
+                    print("Image clicked!")
+
+
+def message(msg, color, cords, size, font=1):
+    fontsize = int(size)
+    if font == 1:
+        font = p.font.SysFont(None, fontsize)
+    elif font == 2:
+        font = p.font.SysFont("dejavuserif", fontsize)
+    elif font == 3:
+        font = p.font.SysFont("dejavusansmono", fontsize)
+    elif font == 4:
+        font = p.font.SysFont("dejavusans", fontsize)
+    screen_text = font.render(msg, True, color)
+    screen.blit(screen_text, cords)
 
 
 while running:
@@ -28,11 +40,13 @@ while running:
             running = False
     screen.fill(0)
     screen.blit(background, (0, 0))
+
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
-    image_rect.center = (400, 300) 
+    image_rect.center = (400, 300)
     onclick()
+
     # flip() the display to put your work on screen
     pygame.display.flip()
 
@@ -42,4 +56,3 @@ while running:
     dt = clock.tick(60) / 1000
 
 pygame.quit()
-
