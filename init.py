@@ -13,8 +13,8 @@ dt = 0
 # sounds !!
 coinUp = pygame.mixer.Sound("resources/sounds/pickupCoin.wav")
 click = pygame.mixer.Sound("resources/sounds/click.wav")
-coinUp.set_volume(0.3)
-click.set_volume(0.3)
+coinUp.set_volume(1)
+click.set_volume(1)
 
 # images !!
 image = pygame.image.load("resources/images/background.jpg")
@@ -33,4 +33,4 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 # upgrades list
-upgrades = [{"cost": 25, "effect": 1, "purchased": False, "label": "Double Click"}]
+upgrades = [{"cost": 25, "effect": 1, "purchased": False, "label": "Double Taco Click"}]

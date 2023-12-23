@@ -36,7 +36,7 @@ def displayUpgrades():
         status = (
             "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
         )
-        message(f"{upgrade['label']} - {status}", white, (400, 50), 60)
+        message(f"{upgrade['label']} - {status}", white, (750, 50), 60)
        
 
 
@@ -44,7 +44,7 @@ def purchaseUpgrade(mouse_pos):
     global tacoClickCount
     x, y = 400, 50
     for upgrade in upgrades:
-        upgrade_rect = pygame.Rect(x, y, 200, 30)
+        upgrade_rect = pygame.Rect(x, y, text_width, text_height)
         if upgrade_rect.collidepoint(mouse_pos) and not upgrade["purchased"]:
             if tacoClickCount >= upgrade["cost"]:
                 tacoClickCount -= upgrade["cost"]
@@ -70,7 +70,7 @@ def message(msg, color, cords, size, font=1):
 
 def purchaseUpgrade(mouse_pos):
     global tacoClickCount
-    x, y = 400, 50
+    x, y = 750, 50
     for upgrade in upgrades:
         text_width, text_height = screen_text.get_size()
         upgrade_rect = pygame.Rect(x, y, text_width, text_height)
@@ -95,7 +95,7 @@ while running:
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
-    image_rect.center = (400, 300)
+    image_rect.center = (300, 240)
     message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
     displayUpgrades()
