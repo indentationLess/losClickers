@@ -81,7 +81,7 @@ while running:
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
     image_rect.center = (400, 300)
-    message(f"tacos: {tacoClickCount}", white, (taco_x - 290, taco_y - 60), 100)
+    message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
     displayUpgrades()
     screenUpdate()

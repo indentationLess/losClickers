@@ -2,8 +2,8 @@ import pygame
 
 # setup stuff
 pygame.init()
-width = 1280
-height = 720
+width = 1360
+height = 768
 screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 pygame.display.set_caption("IT'SSSSSSSSSSSSSSSSSS LOSCLICKERS")
