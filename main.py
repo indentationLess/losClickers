@@ -7,11 +7,11 @@ def screenUpdate():
     pygame.display.update()
 
 
-clicks = 0
+tacoClickCount = 0
 
 
 def onclick():
-    global clicks
+    global tacoClickCount
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -19,8 +19,38 @@ def onclick():
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
                 if image_rect.collidepoint(mouse_pos):
-                    print("Image clicked!")
-                    clicks += 1
+                    increment = 1 + sum(
+                        upgrade["effect"]
+                        for upgrade in upgrades
+                        if upgrade["purchased"]
+                    )
+                    tacoClickCount += increment
+                    click.play()
+                else:
+                    purchaseUpgrade(mouse_pos)
+
+
+def displayUpgrades():
+    x, y = 400, 50  # Starting position for the upgrades menu
+    for upgrade in upgrades:
+        status = (
+            "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
+        )
+        message(f"{upgrade['label']} - {status}", white, (x, y), 30)
+        y += 40
+
+
+def purchaseUpgrade(mouse_pos):
+    global tacoClickCount
+    x, y = 400, 50
+    for upgrade in upgrades:
+        upgrade_rect = pygame.Rect(x, y, 200, 30)
+        if upgrade_rect.collidepoint(mouse_pos) and not upgrade["purchased"]:
+            if tacoClickCount >= upgrade["cost"]:
+                tacoClickCount -= upgrade["cost"]
+                upgrade["purchased"] = True
+                break
+        y += 40
 
 
 def message(msg, color, cords, size, font=1):
@@ -51,9 +81,9 @@ while running:
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
     image_rect.center = (400, 300)
-    message(f"tacos: {clicks}", white, (taco_x - 290, taco_y - 60), 100)
+    message(f"tacos: {tacoClickCount}", white, (taco_x - 290, taco_y - 60), 100)
     onclick()
-
+    displayUpgrades()
     screenUpdate()
 
     # limits FPS to 60
