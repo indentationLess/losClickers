@@ -25,8 +25,8 @@ taco = pygame.image.load("resources/images/taco.png")
 taco_width = taco.get_width()
 taco_height = taco.get_height()
 
-taco_x = width // 2 - taco_width // 2
-taco_y = height // 2 - taco_height // 2
+taco_x = 50
+taco_y = 80
 
 # for text
 black = (0, 0, 0)
