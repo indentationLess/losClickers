@@ -56,6 +56,7 @@ def purchaseUpgrade(mouse_pos):
     global tacoClickCount
     x, y = 400, 50
     for upgrade in upgrades:
+        text_width, text_height = screen_text.get_size()
         upgrade_rect = pygame.Rect(x, y, text_width, text_height)
         if upgrade_rect.collidepoint(mouse_pos) and not upgrade["purchased"]:
             if tacoClickCount >= upgrade["cost"]:
