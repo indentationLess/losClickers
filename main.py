@@ -95,7 +95,7 @@ while running:
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
-    image_rect.center = (300, 200)
+    image_rect.center = (400, 300)
     message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
     displayUpgrades()
