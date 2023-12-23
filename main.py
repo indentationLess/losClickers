@@ -7,7 +7,11 @@ def screenUpdate():
     pygame.display.update()
 
 
+clicks = 0
+
+
 def onclick():
+    global clicks
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -16,6 +20,7 @@ def onclick():
                 mouse_pos = pygame.mouse.get_pos()
                 if image_rect.collidepoint(mouse_pos):
                     print("Image clicked!")
+                    clicks += 1
 
 
 def message(msg, color, cords, size, font=1):
@@ -41,12 +46,12 @@ while running:
     screen.fill(0)
     screen.blit(background, (0, 0))
 
-    pygame.time.delay(10)
+    pygame.time.delay(25)
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
     image_rect.center = (400, 300)
-    message("taco", white, (taco_x, taco_y + 20), 50)
+    message(f"tacos: {clicks}", white, (taco_x, taco_y + 20), 50)
 
     onclick()
 
