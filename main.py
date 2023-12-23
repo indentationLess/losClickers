@@ -21,13 +21,13 @@ def onclick():
 def message(msg, color, cords, size, font=1):
     fontsize = int(size)
     if font == 1:
-        font = p.font.SysFont(None, fontsize)
+        font = pygame.font.SysFont(None, fontsize)
     elif font == 2:
-        font = p.font.SysFont("dejavuserif", fontsize)
+        font = pygame.font.SysFont("dejavuserif", fontsize)
     elif font == 3:
-        font = p.font.SysFont("dejavusansmono", fontsize)
+        font = pygame.font.SysFont("dejavusansmono", fontsize)
     elif font == 4:
-        font = p.font.SysFont("dejavusans", fontsize)
+        font = pygame.font.SysFont("dejavusans", fontsize)
     screen_text = font.render(msg, True, color)
     screen.blit(screen_text, cords)
 
@@ -41,14 +41,16 @@ while running:
     screen.fill(0)
     screen.blit(background, (0, 0))
 
+    pygame.time.delay(10)
     # Display the image on the window
     screen.blit(taco, (taco_x, taco_y))
     image_rect = taco.get_rect()
     image_rect.center = (400, 300)
+    message("taco", white, (taco_x, taco_y + 20), 50)
+
     onclick()
 
-    # flip() the display to put your work on screen
-    pygame.display.flip()
+    screenUpdate()
 
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-

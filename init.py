@@ -27,7 +27,9 @@ taco_height = taco.get_height()
 taco_x = width // 2 - taco_width // 2
 taco_y = height // 2 - taco_height // 2
 
-
 # for text 
 black = (0,0,0)
 white = (255,255,255)
+
+# game variables
+clicks = 0 
