@@ -33,4 +33,10 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 # upgrades list
-upgrades = [{"cost": 25, "effect": 1, "purchased": False, "label": "Double Taco Click"}]
+upgrades = [
+    {"cost": 25, "effect": 1, "purchased": False, "label": "Double Click"},
+    {"cost": 100, "effect": 1, "purchased": 0, "label": "taco machine"},
+]
+
+timer = pygame.USEREVENT + 1
+pygame.time.set_timer(timer, 1000)
