@@ -12,8 +12,9 @@ def screenUpdate():
 
 tacoClickCount = 0
 
-
-# onclick() specificies what should be done to whenever a click is made, the first one is if the thing is done
+# Handles mouse click events. If the close button is clicked, it terminates the game.
+# it checks if the click is on the taco image and increments the taco click count accordingly. 
+# It also handles purchasing upgrades if the click is not on the taco image.
 def onclick():
     global tacoClickCount
     for event in pygame.event.get():
@@ -79,7 +80,8 @@ def purchaseUpgrade(mouse_pos):
             break
         y += 40
 
-
+# Renders a message on the screen with specified parameters: the message text, color, coordinates, font size, and font type.
+# It is used to display various texts on the screen, like the number of tacos or upgrade statuses.
 def message(msg, color, cords, size, font=1):
     global screen_text
     fontsize = int(size)
