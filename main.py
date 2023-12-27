@@ -1,20 +1,26 @@
 import pygame
-import os
+import sys
 from init import *
 
 
+# the display.update updates the screen in a more modern way than display.flip or something i forgot the function
+# it does that by updating specific sections without affecting the rest, although leaving the function empty just
+# updates the whole screen anyways.
 def screenUpdate():
     pygame.display.update()
-
+    
 
 tacoClickCount = 0
 
 
+# onclick() specificies what should be done to whenever a click is made, the first one is if the thing is done
 def onclick():
     global tacoClickCount
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            pygame.quit()
+            sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
@@ -94,7 +100,7 @@ while running:
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            running = False 
     screen.fill(0)
     screen.blit(background, (0, 0))
 
@@ -107,9 +113,7 @@ while running:
     displayUpgrades()
     screenUpdate()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == timer:
+        if event.type == timer:
             for building in buildings:
                 if building["label"] == "Taco Machine":
                     tacoClickCount += building["purchased"] * building["effect"]
