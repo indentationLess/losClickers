@@ -8,12 +8,13 @@ from init import *
 # updates the whole screen anyways.
 def screenUpdate():
     pygame.display.update()
-    
+
 
 tacoClickCount = 0
 
+
 # Handles mouse click events. If the close button is clicked, it terminates the game.
-# it checks if the click is on the taco image and increments the taco click count accordingly. 
+# it checks if the click is on the taco image and increments the taco click count accordingly.
 # It also handles purchasing upgrades if the click is not on the taco image.
 def onclick():
     global tacoClickCount
@@ -35,6 +36,18 @@ def onclick():
                     click.play()
                 else:
                     purchaseUpgrade(mouse_pos)
+
+
+def resize(image):
+    width, height = image.get_size()
+    new_width = width // 2
+    new_height = height // 2
+    return pygame.transform.scale(image, (new_width, new_height))
+
+
+def img(img, x, y):
+    image = pygame.image.load(img)
+    screen.blit(image, (x, y))
 
 
 def displayUpgrades():
@@ -80,6 +93,14 @@ def purchaseUpgrade(mouse_pos):
             break
         y += 40
 
+
+def achievmentSound():
+    if tacoClickCount % 100 == 0 and tacoClickCount != 0:
+        coinUp.play()
+    else:
+        return
+
+
 # Renders a message on the screen with specified parameters: the message text, color, coordinates, font size, and font type.
 # It is used to display various texts on the screen, like the number of tacos or upgrade statuses.
 def message(msg, color, cords, size, font=1):
@@ -102,7 +123,7 @@ while running:
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False 
+            running = False
     screen.fill(0)
     screen.blit(background, (0, 0))
 
@@ -112,7 +133,20 @@ while running:
     image_rect = taco.get_rect()
     message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
-    displayUpgrades()
+
+    if menu == "main":
+        if shopClicked:
+            shopButton = pygame.draw.rect(screen, white, (1100, 100, 100, 50))
+            pygame.draw.rect(screen, (0, 40, 0), (1100, 140, 100, 25))
+            pygame.draw.rect(screen, shopBColor, (1100, 100, 100, 50))
+            message("Shop", white, (1105, 100), 50)
+        else:
+            shopButton = pygame.draw.rect(screen, white, (1100, 120, 100, 75))
+            pygame.draw.rect(screen, (0, 75, 0), (1100, 110, 100, 100))
+            pygame.draw.rect(screen, shopBColor, (1100, 100, 100, 75))
+            message("Shop", white, (1105, 120), 50)
+
+    achievmentSound()
     screenUpdate()
     for event in pygame.event.get():
         if event.type == timer:

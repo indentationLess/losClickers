@@ -22,8 +22,7 @@ background = pygame.transform.scale(image, (width, height))
 taco = pygame.image.load("resources/images/taco.png")
 
 # Get the dimensions of the image
-taco_width = taco.get_width()
-taco_height = taco.get_height()
+taco_width, taco_height = taco.get_size()
 taco_rect = taco.get_rect()
 
 taco_x = 50
@@ -40,3 +39,20 @@ buildings = [
 
 timer = pygame.USEREVENT + 1
 pygame.time.set_timer(timer, 1000)
+
+# game menus !!
+menu = "main"
+
+shopClicked = False
+shopBColor = (0, 150, 0)
+
+backClicked = False
+backBColor = (0, 150, 0)
+
+sellClicked = False
+sellBColor = (0, 150, 0)
+
+UpgradeClicked = False
+UpgradeBColor = (0, 150, 0)
+
+CubeMakers = [0, 0, 0, 0, 0, 0]
