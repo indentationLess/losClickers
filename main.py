@@ -12,6 +12,7 @@ def screenUpdate():
 
 
 tacoClickCount = 0
+lastPlayed = 0
 
 
 # Handles mouse click events. If the close button is clicked, it terminates the game.
@@ -29,7 +30,7 @@ def onclick():
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                if image_rect.collidepoint(mouse_pos):
+                if image_rect.collidepoint(mouse_pos) and menu != "shop":
                     increment = 1 + sum(
                         upgrade["effect"]
                         for upgrade in upgrades
@@ -54,27 +55,31 @@ def img(img, x, y):
 
 
 def displayUpgrades():
-    x, y = 500, 50
-    y_offset = 50
+    x, y = 600, 70
+    y_offset = 70
     message("Upgrades: ", black, (x, y - 50), 60)
     for upgrade in upgrades:
         status = (
             "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
         )
-        message(f"{upgrade['label']} - {status}", black, (x, y_offset), 40)
-        y_offset += 60
+        message(f"{upgrade['label']} - {status}", black, (x, y_offset), 45)
+    
+
+    
+
+def displayBuildings():
+    x, y = 600, 70
+    y_offset = 200
     message("Buildings: ", black, (x, y_offset), 60)
-    y_offset += 40
+    y_offset += 50
     for building in buildings:
         status = f"Purchased: {building['purchased']}, Cost: {building['cost']} Clicks"
 
-        message(f"{building['label']} - {status}", black, (x, y_offset), 40)
-    y_offset += 40
-
+        message(f"{building['label']} - {status}", black, (x, y_offset), 45)
 
 def purchaseUpgrade(mouse_pos):
     global tacoClickCount
-    x, y = 400, 50
+    x, y = 600, 50
     for upgrade in upgrades:
         text_width, text_height = screen_text.get_size()
         upgrade_rect = pygame.Rect(x, y, text_width, text_height)
@@ -82,8 +87,8 @@ def purchaseUpgrade(mouse_pos):
             if tacoClickCount >= upgrade["cost"]:
                 tacoClickCount -= upgrade["cost"]
                 upgrade["purchased"] = True
-                break
-        y += 40
+                return
+        y += 150
     for building in buildings:
         text_width, text_height = screen_text.get_size()
         building_rect = pygame.Rect(x, y, 400, 60)
@@ -98,8 +103,10 @@ def purchaseUpgrade(mouse_pos):
 
 
 def achievmentSound():
-    if tacoClickCount % 100 == 0 and tacoClickCount != 0:
+    global lastPlayed
+    if tacoClickCount % 100 == 0 and tacoClickCount != 0 and tacoClickCount != lastPlayed:
         coinUp.play()
+        lastPlayed = tacoClickCount
     else:
         return
 
@@ -169,7 +176,31 @@ while running:
         message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
 
     elif menu == "shop":
+        if backClicked:
+            backButton = pygame.draw.rect(screen, white, (50, 100, 100, 50))
+            pygame.draw.rect(screen, (0, 40, 0), (50, 140, 100, 25))
+            pygame.draw.rect(screen, backBColor, (50, 100, 100, 50))
+            message("Back", white, (55, 100), 50)
+        else:
+            backButton = pygame.draw.rect(screen, white, (50, 120, 100, 75))
+            pygame.draw.rect(screen, (0, 75, 0), (50, 110, 100, 100))
+            pygame.draw.rect(screen, backBColor, (50, 100, 100, 75))
+            message("Back", white, (55, 120), 50)
+
+        if backButton.collidepoint(pos) and pressed1:
+            backClicked = True
+        else:
+            if backClicked:
+                menu = "main"
+            backClicked = False
+
+        if backButton.collidepoint(pos):
+            backBColor = (0, 185, 0)
+        else:
+            backBColor = (0, 150, 0)
+
         displayUpgrades()
+        displayBuildings()
 
     achievmentSound()
     screenUpdate()

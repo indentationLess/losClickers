@@ -34,10 +34,9 @@ white = (255, 255, 255)
 # upgrades list
 upgrades = [{"cost": 25, "effect": 1, "purchased": False, "label": "Double Click"}]
 buildings = [
-    {"base_cost": 15,"cost": 15, "effect": 1, "purchased": 0, "label": "Taco Machine"},
-]
+    {"base_cost": 15,"cost": 15, "effect": 1, "purchased": 0, "label": "Taco Machine"},]
 timer = pygame.USEREVENT + 1
-pygame.time.set_timer(timer, 1000)
+pygame.time.set_timer(timer, 500)
 
 # game menus !!
 menu = "main"
