@@ -204,7 +204,7 @@ while running:
     # pygame.QUIT event means the user clicked X to close your window
     screen.fill(0)
     screen.blit(background, (0, 0))
-
+    handleEvents()
     pygame.time.delay(25)
     onclick()
     pos = pygame.mouse.get_pos()
@@ -222,7 +222,6 @@ while running:
         displayBuildings()  
     achievmentSound()
     screenUpdate()
-    handleEvents()
     for event in pygame.event.get():
         if event.type == timer:
             for building in buildings:
