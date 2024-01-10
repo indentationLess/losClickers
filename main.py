@@ -1,6 +1,7 @@
 import pygame
 import sys
 from init import *
+import math
 
 
 # the display.update updates the screen in a more modern way than display.flip or something i forgot the function
@@ -16,6 +17,8 @@ tacoClickCount = 0
 # Handles mouse click events. If the close button is clicked, it terminates the game.
 # it checks if the click is on the taco image and increments the taco click count accordingly.
 # It also handles purchasing upgrades if the click is not on the taco image.
+
+
 def onclick():
     global tacoClickCount
     for event in pygame.event.get():
@@ -51,24 +54,21 @@ def img(img, x, y):
 
 
 def displayUpgrades():
-    x, y = 600, 50  # Starting position for the upgrades menu
+    x, y = 500, 50
     y_offset = 50
-    message("upgrades: ", white, (x, y - 50), 60)
+    message("Upgrades: ", black, (x, y - 50), 60)
     for upgrade in upgrades:
         status = (
             "Purchased" if upgrade["purchased"] else f"Cost: {upgrade['cost']} Clicks"
         )
-        message(f"{upgrade['label']} - {status}", white, (x, y_offset), 60)
+        message(f"{upgrade['label']} - {status}", black, (x, y_offset), 40)
         y_offset += 60
-    message("buildings: ", white, (x, y_offset), 60)
+    message("Buildings: ", black, (x, y_offset), 60)
     y_offset += 40
     for building in buildings:
-        status = (
-            "Purchased: " + str(building["purchased"])
-            if building["purchased"] > 0
-            else f"Cost: {building['cost']} Clicks"
-        )
-        message(f"{building['label']} - {status}", white, (x, y_offset), 60)
+        status = f"Purchased: {building['purchased']}, Cost: {building['cost']} Clicks"
+
+        message(f"{building['label']} - {status}", black, (x, y_offset), 40)
     y_offset += 40
 
 
@@ -89,6 +89,9 @@ def purchaseUpgrade(mouse_pos):
         building_rect = pygame.Rect(x, y, 400, 60)
         if building_rect.collidepoint(mouse_pos) and tacoClickCount >= building["cost"]:
             tacoClickCount -= building["cost"]
+            building["cost"] = math.floor(
+                building["base_cost"] * (1.15 ** building["purchased"] + 0.25)
+            )
             building["purchased"] += 1
             break
         y += 40
@@ -128,12 +131,10 @@ while running:
     screen.blit(background, (0, 0))
 
     pygame.time.delay(25)
-    # Display the image on the window
-    screen.blit(taco, (taco_x, taco_y))
-    image_rect = taco.get_rect()
-    message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
     onclick()
+    pos = pygame.mouse.get_pos()
 
+    pressed1, pressed2, pressed3 = pygame.mouse.get_pressed()
     if menu == "main":
         if shopClicked:
             shopButton = pygame.draw.rect(screen, white, (1100, 100, 100, 50))
@@ -145,6 +146,30 @@ while running:
             pygame.draw.rect(screen, (0, 75, 0), (1100, 110, 100, 100))
             pygame.draw.rect(screen, shopBColor, (1100, 100, 100, 75))
             message("Shop", white, (1105, 120), 50)
+
+        if (
+            shopButton.collidepoint(pos)
+            and pressed1
+            or shopButton.collidepoint(pos)
+            and pressed3
+        ):
+            shopClicked = True
+        else:
+            if shopClicked:
+                menu = "shop"
+            shopClicked = False
+
+        if shopButton.collidepoint(pos):
+            shopBColor = (0, 185, 0)
+        else:
+            shopBColor = (0, 150, 0)
+        # Display the image on the window
+        screen.blit(taco, (taco_x, taco_y))
+        image_rect = taco.get_rect()
+        message(f"tacos: {tacoClickCount}", white, (100, 60), 100)
+
+    elif menu == "shop":
+        displayUpgrades()
 
     achievmentSound()
     screenUpdate()

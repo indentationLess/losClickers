@@ -34,9 +34,8 @@ white = (255, 255, 255)
 # upgrades list
 upgrades = [{"cost": 25, "effect": 1, "purchased": False, "label": "Double Click"}]
 buildings = [
-    {"cost": 100, "effect": 1, "purchased": 0, "label": "taco machine"},
+    {"base_cost": 15,"cost": 15, "effect": 1, "purchased": 0, "label": "Taco Machine"},
 ]
-
 timer = pygame.USEREVENT + 1
 pygame.time.set_timer(timer, 1000)
 
@@ -55,4 +54,4 @@ sellBColor = (0, 150, 0)
 UpgradeClicked = False
 UpgradeBColor = (0, 150, 0)
 
-CubeMakers = [0, 0, 0, 0, 0, 0]
+TacoMakers = [0, 0, 0, 0, 0, 0]
