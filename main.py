@@ -2,11 +2,12 @@ import pygame
 import sys
 from init import *
 import math
-import threading 
+
 
 # the display.update updates the screen in a more modern way than display.flip or something i forgot the function
 # it does that by updating specific sections without affecting the rest, although leaving the function empty just
 # updates the whole screen anyways.
+# Aser did this ☝
 def screenUpdate():
     pygame.display.update()
 
@@ -20,6 +21,7 @@ lastPlayed = 0
 # It also handles purchasing upgrades if the click is not on the taco image.
 
 
+# Omar did this ☝
 def onclick():
     global tacoClickCount
     for event in pygame.event.get():
@@ -42,18 +44,13 @@ def onclick():
                     purchaseUpgrade(mouse_pos)
 
 
-def resize(image):
-    width, height = image.get_size()
-    new_width = width // 2
-    new_height = height // 2
-    return pygame.transform.scale(image, (new_width, new_height))
-
-
+# Ali did this ☝
 def img(img, x, y):
     image = pygame.image.load(img)
     screen.blit(image, (x, y))
 
 
+# Aser did this ☝
 def displayUpgrades():
     x, y = 600, 70
     y_offset = 70
@@ -65,6 +62,7 @@ def displayUpgrades():
         message(f"{upgrade['label']} - {status}", black, (x, y_offset), 45)
 
 
+# Aser did this ☝
 def displayBuildings():
     x, y = 600, 70
     y_offset = 200
@@ -76,6 +74,7 @@ def displayBuildings():
         message(f"{building['label']} - {status}", black, (x, y_offset), 45)
 
 
+# Omar did this ☝
 def purchaseUpgrade(mouse_pos):
     global tacoClickCount
     x, y = 600, 50
@@ -101,6 +100,7 @@ def purchaseUpgrade(mouse_pos):
         y += 40
 
 
+# Aser did this ☝
 def achievmentSound():
     global lastPlayed
     if (
@@ -116,6 +116,7 @@ def achievmentSound():
 
 # Renders a message on the screen with specified parameters: the message text, color, coordinates, font size, and font type.
 # It is used to display various texts on the screen, like the number of tacos or upgrade statuses.
+# Ali did this ☝
 def message(msg, color, cords, size, font=1):
     global screen_text
     fontsize = int(size)
@@ -131,6 +132,7 @@ def message(msg, color, cords, size, font=1):
     screen.blit(screen_text, cords)
 
 
+# Ali did this ☝
 def handleEvents():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -138,6 +140,7 @@ def handleEvents():
     return True
 
 
+# Omar did this ☝
 def draw_shop_button(screen, pos, pressed1, pressed3, shopClicked, menu):
     global shopBColor
     if shopClicked:
@@ -171,7 +174,8 @@ def draw_shop_button(screen, pos, pressed1, pressed3, shopClicked, menu):
     return shopClicked, menu
 
 
-def draw_back_button(screen, pos, pressed1, backClicked, menu):
+# Aser did this ☝
+def drawBackButton(screen, pos, pressed1, backClicked, menu):
     global backBColor
     if backClicked:
         backButton = pygame.draw.rect(screen, white, (50, 100, 100, 50))
@@ -199,6 +203,93 @@ def draw_back_button(screen, pos, pressed1, backClicked, menu):
     return backClicked, menu
 
 
+# Omar did this ☝
+def drawSaveButton(screen, pos, pressed1, pressed3, saveClicked, menu):
+    global saveBColor
+    if saveClicked:
+        saveButton = pygame.draw.rect(screen, white, (1100, 600, 100, 50))
+        pygame.draw.rect(screen, (0, 40, 0), (1100, 640, 100, 25))
+        pygame.draw.rect(screen, saveBColor, (1100, 600, 100, 50))
+        message("Save", white, (1105, 600), 50)
+    else:
+        saveButton = pygame.draw.rect(screen, white, (1100, 600, 100, 50))
+        pygame.draw.rect(screen, (0, 40, 0), (1100, 640, 100, 25))
+        pygame.draw.rect(screen, saveBColor, (1100, 600, 100, 50))
+        message("Save", white, (1105, 600), 50)
+
+    if (
+        saveButton.collidepoint(pos)
+        and pressed1
+        or saveButton.collidepoint(pos)
+        and pressed3
+    ):
+        saveClicked = True
+        saveGame()
+
+    if saveButton.collidepoint(pos):
+        saveBColor = (0, 185, 0)
+    else:
+        saveBColor = (0, 150, 0)
+
+    return saveClicked, menu
+
+
+# Ali did this ☝
+def drawLoadButton(screen, pos, pressed1, pressed3, loadClicked, menu):
+    global loadBColor
+    if loadClicked:
+        loadButton = pygame.draw.rect(screen, white, (900, 600, 100, 50))
+        pygame.draw.rect(screen, (0, 40, 0), (900, 600, 100, 25))
+        pygame.draw.rect(screen, loadBColor, (900, 600, 100, 50))
+        message("Load", white, (905, 600), 50)
+    else:
+        loadButton = pygame.draw.rect(screen, white, (900, 600, 100, 50))
+        pygame.draw.rect(screen, (0, 40, 0), (900, 640, 100, 25))
+        pygame.draw.rect(screen, loadBColor, (900, 600, 100, 50))
+        message("Load", white, (905, 600), 50)
+
+    if (
+        loadButton.collidepoint(pos)
+        and pressed1
+        or loadButton.collidepoint(pos)
+        and pressed3
+    ):
+        loadClicked = True
+        loadGame()
+
+    if loadButton.collidepoint(pos):
+        loadBColor = (0, 185, 0)
+    else:
+        loadBColor = (0, 150, 0)
+
+    return loadClicked, menu
+
+
+# Ali did this ☝
+def saveGame():
+    with open("savefile.txt", "w") as file:
+        data = {
+            "tacoClickCount": tacoClickCount,
+            "upgrades": upgrades,
+            "buildings": buildings,
+        }
+        file.write(str(data))
+
+
+# Omar did this ☝
+def loadGame():
+    global tacoClickCount, upgrades, buildings
+    try:
+        with open("savefile.txt", "r") as file:
+            data = eval(file.read())
+            tacoClickCount = data["tacoClickCount"]
+            upgrades = data["upgrades"]
+            buildings = data["buildings"]
+    except FileNotFoundError:
+        print("Save file not found. Starting a new game.")
+
+
+# Omar did this ☝
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -210,16 +301,23 @@ while running:
     pos = pygame.mouse.get_pos()
     pressed1, pressed2, pressed3 = pygame.mouse.get_pressed()
     if menu == "main":
+        saveClicked, menu = drawSaveButton(
+            screen, pos, pressed1, pressed3, saveClicked, menu
+        )
         shopClicked, menu = draw_shop_button(
             screen, pos, pressed1, pressed3, shopClicked, menu
         )
+        loadClicked, menu = drawLoadButton(
+            screen, pos, pressed1, pressed3, loadClicked, menu
+        )
         screen.blit(taco, (taco_x, taco_y))
         image_rect = taco.get_rect()
-        message(f"tacos: {tacoClickCount}", white, (100, 60), 100)      
+        message(f"Tacos: {tacoClickCount}", white, (100, 60), 100)
+
     elif menu == "shop":
-        backClicked, menu = draw_back_button(screen, pos, pressed1, backClicked, menu)
+        backClicked, menu = drawBackButton(screen, pos, pressed1, backClicked, menu)
         displayUpgrades()
-        displayBuildings()  
+        displayBuildings()
     achievmentSound()
     screenUpdate()
     for event in pygame.event.get():

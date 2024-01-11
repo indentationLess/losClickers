@@ -1,0 +1,1 @@
+{'tacoClickCount': 14, 'upgrades': [{'cost': 25, 'effect': 1, 'purchased': True, 'label': 'Double Click'}], 'buildings': [{'base_cost': 15, 'cost': 33, 'effect': 1, 'purchased': 6, 'label': 'Taco Machine'}]}

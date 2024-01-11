@@ -44,6 +44,12 @@ menu = "main"
 shopClicked = False
 shopBColor = (0, 150, 0)
 
+saveClicked = False
+saveBColor = (0, 150, 0)
+
+loadClicked = False
+loadBColor = (0, 150, 0)
+
 backClicked = False
 backBColor = (0, 150, 0)
 
